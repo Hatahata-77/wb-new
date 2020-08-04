@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>座席表</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css">
+    <link rel="stylesheet" href="https://jenil.github.io/bulmaswatch/solar/bulmaswatch.min.css">
+
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+
+    <meta charset="UTF-8">  
+    <title>Document</title>
+    <style type="text/css">
+        table.island{
+            border-collapse: collapse;
+            margin-left: 5px;
+        }
+        table.island tbody tr td{
+            width: 100px;
+            height: 50px;
+        }
+    </style>
+</head>
+<body>
+     <div id="app" class="container" style="padding-top: 64px;">
+        <div class="container">
+            <div class="error" v-if="error">
+                {{ error }}
+            </div>
+            <section v-else>
+                <!-- ３棟３階のレイアウト -->
+                <div class="columns">
+                    <island-component v-bind:info="info" v-bind:ids="331"></island-component>
+                    <island-component v-bind:info="info" v-bind:ids="332"></island-component>
+                    <island-component v-bind:info="info" v-bind:ids="333"></island-component>
+                    <island-component v-bind:info="info" v-bind:ids="334"></island-component>
+                    <island-component v-bind:info="info" v-bind:ids="335"></island-component>
+                    <island-component v-bind:info="info" v-bind:ids="336"></island-component>
+                    <island-component v-bind:info="info" v-bind:ids="337"></island-component>
+                </div>
+
+                <div style="height: 30px;">
+                </div>
+
+                <!-- ３棟４階のレイアウト -->
+                <div class="columns">
+                    <island-component v-bind:info="info" v-bind:ids="341"></island-component>
+                    <island-component v-bind:info="info" v-bind:ids="342"></island-component>
+                    <island-component v-bind:info="info" v-bind:ids="343"></island-component>
+                    <island-component v-bind:info="info" v-bind:ids="344"></island-component>
+                    <island-component v-bind:info="info" v-bind:ids="345"></island-component>
+                    <island-component v-bind:info="info" v-bind:ids="346"></island-component>
+                    <island-component v-bind:info="info" v-bind:ids="347"></island-component>
+                </div>
+
+            </section>
+        </div>
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
+    <script type="text/javascript">
+    
+        var deskComponent = {
+            props: ['item'],
+            template:`<div><a href="*">{{item.name}}</a><br /><a href="*">{{item.interPhone}}</a></div>`
+        }
+        
+        Vue.component('island-component', {
+            data: function(){
+                return {
+                    myData: null
+                }
+            },
+            props: {
+                'info': {
+                    default:null
+                },
+                'ids': {
+                    default: null
+                }
+            },
+            template:`<div>
+                        <table class="table is-bordered is-narrow is-hoverable is-fullwidth island">
+                        <thead></thead>
+                        <tbody>
+                            <!-- ひな壇の席 -->
+                            <tr>
+                                <td colspan=2 v-if="myData[0] != null">
+                                    <!-- 表示する情報が存在する場合 -->
+                                    <desk-component v-bind:item="myData[0]"></desk-component>
+                                </td>
+                                <td colspan=2 v-else style="border: 0px none;">
+                                    <!-- 在籍者なしのため、ボーダーを消去-->
+                                </td>
+                            </tr>
+                            <!-- 座席２列４席 -->
+                            <tr
+                                <td ><desk-component v-bind:item="myData[1]"></desk-component></td>
+                                <td ><desk-component v-bind:item="myData[2]"></desk-component></td>
+                            </tr>
+                            <tr>
+                                <td ><desk-component v-bind:item="myData[3]"></desk-component></td>
+                                <td ><desk-component v-bind:item="myData[4]"></desk-component></td>
+                            </tr>
+                            <tr>
+                                <td ><desk-component v-bind:item="myData[5]"></desk-component></td>
+                                <td ><desk-component v-bind:item="myData[6]"></desk-component></td>
+                            </tr>
+                            <tr>
+                                <td><desk-component v-bind:item="myData[7]"></desk-component></td>
+                                <td><desk-component v-bind:item="myData[8]"></desk-component></td>
+                            </tr>
+                        </tbody>
+                        </table>
+
+                    </div>`,
+            created: function(){　//インスタンスが生成された後の処理コード
+                   axios
+                    .get('http://41-kbs218vm/api/wb/' + this.ids)
+                    .then(response => { //通信が成功した処理を記述する
+                                        this.myData = Array(9);     //9つの配列を確保する
+                                        for (let i =0; i < response.data.length; i++){
+                                            if(response.data[i].seq.length==5){
+                                                //seqから配列の格納する位置を取得する
+                                                let index = parseInt(response.data[i].seq.substr(3,2),10);
+                                                if(index >=0 && index < this.myData.length){
+                                                    this.myData[index] = response.data[i];
+                                                }
+                                            }   
+                                        }
+                                       })
+                    .catch(error => (this.error = error))
+            },
+            components: {
+                'desk-component': deskComponent
+            }
+        })
+        new Vue({
+          el: '#app',
+          data () {
+            return {
+              info: null,
+              error: null
+          }
+      },
+      methods:{
+        update: function(){
+        //axios
+        //    .delete('http://localhost:59434/api/wbs2/33200')
+        //    .then(response => (alert("更新完了")))
+        //    .error(response => (alert("エラー")))
+        }
+      }
+})
+</script>
+</body>
+</html>

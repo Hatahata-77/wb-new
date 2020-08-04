@@ -1,0 +1,40 @@
+{
+    "workbench.colorCustomizations": {
+        "activityBar.activeBackground": "#65c89b",
+        "activityBar.activeBorder": "#945bc4",
+        "activityBar.background": "#65c89b",
+        "activityBar.foreground": "#15202b",
+        "activityBar.inactiveForeground": "#15202b99",
+        "activityBarBadge.background": "#945bc4",
+        "activityBarBadge.foreground": "#e7e7e7",
+        "statusBar.background": "#42b883",
+        "statusBar.border": "#42b883",
+        "statusBar.foreground": "#15202b",
+        "statusBarItem.hoverBackground": "#359268",
+        "titleBar.activeBackground": "#42b883",
+        "titleBar.activeForeground": "#15202b",
+        "titleBar.border": "#42b883",
+        "titleBar.inactiveBackground": "#42b88399",
+        "titleBar.inactiveForeground": "#15202b99"
+    },
+    "peacock.color": "#42b883",
+    "sqltools.connections": [
+        {
+            "database": "postgres",
+            "driver": "PostgreSQL",
+            "name": "41-kbs172vm",
+            "password": "kanri",
+            "port": 5432,
+            "previewLimit": 50,
+            "server": "41-kbs172vm.kenko.rsoa.ryobi.co.jp",
+            "username": "ct0000"
+        },
+        {
+            "database": "D:\\wb\\Source\\WB\\App_Data\\wb.sqlite",
+            "driver": "SQLite",
+            "name": "wb.sqlite",
+            "previewLimit": 50
+        }
+    ],
+    "sqltools.useNodeRuntime": true
+}
